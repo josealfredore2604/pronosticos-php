@@ -1,0 +1,9 @@
+# Configuración de PHPStan, el analizador estático de PHP.
+# level va de 0 (lo más básico) a 10 (lo más estricto). En el nivel 6 PHPStan exige,
+# entre otras cosas, que los parámetros y retornos tengan tipo y que los arreglos
+# documenten qué contienen (por ejemplo list<int|float>).
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests

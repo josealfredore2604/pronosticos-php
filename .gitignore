@@ -1,0 +1,10 @@
+# Dependencias instaladas por Composer
+vendor/
+
+# Reportes y caché de PHPUnit
+coverage.xml
+.phpunit.cache/
+.phpunit.result.cache
+
+# Archivos del sistema operativo
+.DS_Store
