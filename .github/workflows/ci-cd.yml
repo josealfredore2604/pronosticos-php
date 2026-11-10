@@ -46,13 +46,41 @@ jobs:
         run: composer test:unit
 
   # ---------------------------------------------------------------------------
+  # CI: pruebas BDD
+  # ---------------------------------------------------------------------------
+  # Ejecuta los escenarios escritos en Gherkin (features/). Son pruebas
+  # funcionales: verifican el comportamiento contra el requisito, con frases que
+  # Producción puede leer. Corre en su propia máquina, en paralelo con las pruebas
+  # unitarias: un job no ve lo que instaló otro, por eso repite la preparación.
+  pruebas-bdd:
+    name: Pruebas BDD
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v6
+
+      - name: Instalar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Instalar dependencias
+        run: composer install --no-interaction --no-progress
+
+      # Behat lee behat.yml, carga los contextos registrados ahí y ejecuta cada
+      # escenario de features/. Si un paso no tiene método, el job falla.
+      - name: Ejecutar escenarios BDD
+        run: composer test:bdd
+
+  # ---------------------------------------------------------------------------
   # CD: despliegue simulado
   # ---------------------------------------------------------------------------
   despliegue:
     name: Despliegue (simulado)
     # needs: el despliegue solo corre si todos los jobs listados terminaron bien.
     # Si una prueba falla, este job no se ejecuta y nada llega a producción.
-    needs: [pruebas-unitarias]
+    needs: [pruebas-unitarias, pruebas-bdd]
     # Solo se despliega lo que entra a main, nunca desde un pull request.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest

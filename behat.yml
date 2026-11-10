@@ -1,0 +1,14 @@
+# Configuración de Behat.
+#
+# Una suite agrupa escenarios y los contextos que los ejecutan. Behat lee los
+# .feature de features/ y carga sin configuración adicional las clases de
+# features/bootstrap/. Cada contexto de la lista aporta sus pasos a la suite.
+#
+# Behat 3 acepta este formato YAML. Behat 4 solo aceptará configuración en PHP
+# (behat.php); cuando el proyecto actualice, se convierte con:
+#   vendor/bin/behat --convert-config
+default:
+  suites:
+    default:
+      contexts:
+        - PromedioMovilContext
